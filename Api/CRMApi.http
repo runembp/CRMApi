@@ -1,0 +1,6 @@
+@CRMApi_HostAddress = http://localhost:5167
+
+GET {{CRMApi_HostAddress}}/Contacts/GetAll
+Accept: application/json
+
+###
