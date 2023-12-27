@@ -1,6 +1,6 @@
 @CRMApi_HostAddress = http://localhost:5167
 
-GET {{CRMApi_HostAddress}}/Contacts/GetAll
+GET {{CRMApi_HostAddress}}/api/accounts/GetAllExternalSupplierUpdated
 Accept: application/json
 
 ###

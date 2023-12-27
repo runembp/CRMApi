@@ -1,5 +1,6 @@
-﻿using CRMApi.Services;
+﻿using CRMApi.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace CRMApi.Features.Accounts;
 
@@ -14,16 +15,29 @@ public static class GetAllExternalSupplierUpdated
     private static async Task<IResult> Handle([AsParameters] GetAllExternalSupplierUpdatedRequest request, 
     [FromServices] ICrmServiceEndpoint crmServiceEndpoint)
     {
-        const string query = "";
+        const string query = "accounts?$filter=(Microsoft.Dynamics.CRM.LastXDays(PropertyName=%27new_externalsupplierupdated%27,PropertyValue=2))";
+        var result = await crmServiceEndpoint.GetRecordsByQuery<Account>(query);
+
+        var accounts = result.Entities;
         
-        var result = await crmServiceEndpoint.GetRecordsByQuery(query);
-        
-        return Results.Ok(result);
+        return Results.Ok(accounts);
     }
     
-    public class Account
+    private class Account : IEntity
     {
-        public Guid Id { get; set; }
-        public required string Title { get; set; }
+        [JsonProperty("new_ff_key")]
+        public string? FfKey { get; set; }
+        
+        [JsonProperty("new_remarksabouthealth")]
+        public string? RemarksAboutHealth { get; set; }
+            
+        [JsonProperty("new_external_suppliers")]
+        public string? ExternalSuppliers { get; set; }
+        
+        [JsonProperty("new_dkningprmedarbejdergruppe")]
+        public string? CoveragePerEmployeeGroup { get; set; }
+        
+        [JsonProperty("new_blumesupport")]
+        public bool? BlumeSupport { get; set; }
     }
 }

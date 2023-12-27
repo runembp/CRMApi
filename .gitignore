@@ -1,3 +1,6 @@
 /.idea
 /Api/obj
-/Api/
+/Api/bin
+/packages
+/UnitTests/obj
+/UnitTests/bin

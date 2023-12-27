@@ -1,14 +1,41 @@
-﻿namespace CRMApi.Services;
+﻿using CRMApi.Interfaces;
+using CRMApi.Shared;
+using Newtonsoft.Json;
 
-public interface ICrmServiceEndpoint
-{
-    Task<List<string>> GetRecordsByQuery(string query);
-}
+namespace CRMApi.Services;
 
-public class CrmServiceEndpoint : ICrmServiceEndpoint
+public class CrmServiceEndpoint(IApiClient apiClient) : ICrmServiceEndpoint
 {
-    public Task<List<string>> GetRecordsByQuery(string query)
+    private readonly HttpClient _httpClient = apiClient.GetClient();
+    private readonly JsonSerializerSettings _jsonSettings = new()
     {
-        return Task.FromResult(new List<string> { "Record 1", "Record 2" });
+        MissingMemberHandling = MissingMemberHandling.Ignore
+    };
+    
+    public async Task<T> GetRecordByQuery<T>(string query) where T : IEntity
+    {
+        var jsonResponse = await GetJsonResponse(query);
+        
+        var result = JsonConvert.DeserializeObject<ODataRecordEntity<T>>(jsonResponse, _jsonSettings);
+        
+        return result!.Entity;
+    }
+
+    public async Task<ODataListEntity<T>> GetRecordsByQuery<T>(string query) where T : IEntity
+    {
+        var jsonResponse = await GetJsonResponse(query);
+
+        var result = JsonConvert.DeserializeObject<ODataListEntity<T>>(jsonResponse, _jsonSettings);
+
+        return result!;
+    }
+
+    private async Task<string> GetJsonResponse(string query)
+    {
+        var httpResponse = await _httpClient.GetAsync(query);
+        
+        var jsonResponse = await httpResponse.Content.ReadAsStringAsync();
+        
+        return jsonResponse;
     }
 }
