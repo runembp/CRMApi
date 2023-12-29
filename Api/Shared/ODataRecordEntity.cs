@@ -6,8 +6,8 @@ namespace CRMApi.Shared;
 public class ODataRecordEntity<T> where T : IEntity
 {
     [JsonPropertyName("@odata.context")]
-    public string? Context { get; set; }
+    public string? Context { get; init; }
     
     [JsonPropertyName("value")]
-    public T Entity { get; set; }
+    public T? Entity { get; init; }
 }

@@ -7,7 +7,7 @@ public static class DependencyInjection
 {
     public static void AddDependencyInjection(this IServiceCollection services)
     {
-        services.AddSingleton<ICrmServiceEndpoint, CrmServiceEndpoint>();
-        services.AddSingleton<IApiClient, ApiClient>();
+        services.AddSingleton<ICrmRequestService, CrmRequestRequestService>();
+        services.AddSingleton<IApiClient, ApiClientService>();
     }
 }

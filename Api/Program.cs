@@ -26,6 +26,4 @@ app.MapCarter();
 
 EndPointsMapping.MapEndPoints(app);
 
-// app.UseHttpsRedirection();
-
 app.Run();
