@@ -1,4 +1,4 @@
-using CRMApi.Shared;
+using CRMApi.Entities;
 
 namespace CRMApi.Interfaces;
 

@@ -1,6 +1,6 @@
 ﻿using Ardalis.GuardClauses;
+using CRMApi.Entities;
 using CRMApi.Interfaces;
-using CRMApi.Shared;
 using Newtonsoft.Json;
 using Simple.OData.Client;
 

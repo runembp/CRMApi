@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using CRMApi.Interfaces;
 
-namespace CRMApi.Shared;
+namespace CRMApi.Entities;
 
 public class ODataRecordEntity<T> where T : IEntity
 {

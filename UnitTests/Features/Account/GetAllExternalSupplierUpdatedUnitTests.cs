@@ -1,6 +1,6 @@
+using CRMApi.Entities;
 using CRMApi.Features.Accounts;
 using CRMApi.Interfaces;
-using CRMApi.Shared;
 using Microsoft.AspNetCore.Http.HttpResults;
 using NSubstitute;
 
@@ -13,6 +13,7 @@ public class GetAllExternalSupplierUpdatedUnitTests
     {
         // Arrange
         var crmRequestService = Substitute.For<ICrmRequestService>();
+        var apiClientService = Substitute.For<IApiClient>();
         var expectedList = new ODataListEntity<GetAllExternalSupplierUpdated.Account>
         {
             Entities = new List<GetAllExternalSupplierUpdated.Account>
@@ -23,7 +24,7 @@ public class GetAllExternalSupplierUpdatedUnitTests
         crmRequestService.GetRecordsByQuery<GetAllExternalSupplierUpdated.Account>(Arg.Any<string>()).Returns(expectedList);
 
         // Act
-        var result = GetAllExternalSupplierUpdated.Handle(new GetAllExternalSupplierUpdated.GetAllExternalSupplierUpdatedRequest(), crmRequestService).Result;
+        var result = GetAllExternalSupplierUpdated.Handle(new GetAllExternalSupplierUpdated.GetAllExternalSupplierUpdatedRequest(), crmRequestService, apiClientService).Result;
 
         // Assert
         Assert.NotNull(result);
@@ -39,16 +40,17 @@ public class GetAllExternalSupplierUpdatedUnitTests
     {
         // Arrange
         var crmRequestService = Substitute.For<ICrmRequestService>();
+        var apiClientService = Substitute.For<IApiClient>();
         var expectedList = new ODataListEntity<GetAllExternalSupplierUpdated.Account>();
         crmRequestService.GetRecordsByQuery<GetAllExternalSupplierUpdated.Account>(Arg.Any<string>()).Returns(expectedList);
 
         // Act
-        var result = GetAllExternalSupplierUpdated.Handle(new GetAllExternalSupplierUpdated.GetAllExternalSupplierUpdatedRequest(), crmRequestService).Result;
+        var result = GetAllExternalSupplierUpdated.Handle(new GetAllExternalSupplierUpdated.GetAllExternalSupplierUpdatedRequest(), crmRequestService, apiClientService).Result;
 
         // Assert
         Assert.NotNull(result);
         Assert.IsType<Ok>(result);
-        
+
         var okResult = result as Ok<List<GetAllExternalSupplierUpdated.Account>>;
         Assert.Null(okResult?.Value);
     }
