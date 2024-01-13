@@ -16,17 +16,16 @@ public static class GetAllExternalSupplierUpdated
 
     public static async Task<IResult> Handle(
         [AsParameters] GetAllExternalSupplierUpdatedRequest request,
-        [FromServices] ICrmRequestService crmRequestService,
-        [FromServices] IApiClient apiClient)
+        [FromServices] IApiClientService apiClientService)
     {
-        var accountsResult = await GetUpdatedAccounts(apiClient);
+        var accountsResult = await GetUpdatedAccounts(apiClientService);
         return Results.Ok(accountsResult);
     }
     
     private static async Task<IEnumerable<Account>> GetUpdatedAccounts(
-        IApiClient apiClient)
+        IApiClientService apiClientService)
     {
-        var odataClient = apiClient.GetODataClient();
+        var odataClient = apiClientService.GetODataClient();
         var twoDaysAgo = DateTime.Now.AddDays(-2);
 
         var accountsResult = await odataClient

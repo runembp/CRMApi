@@ -2,5 +2,3 @@
 
 GET {{CRMApi_HostAddress}}/api/accounts/GetAllExternalSupplierUpdated
 Accept: application/json
-
-###
