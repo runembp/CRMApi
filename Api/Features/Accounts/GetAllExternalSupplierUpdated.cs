@@ -1,7 +1,7 @@
-﻿using CRMApi.Interfaces;
+﻿using System.Text.Json.Serialization;
+using CRMApi.Interfaces;
 using CRMApi.Utilities;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace CRMApi.Features.Accounts;
 
@@ -38,24 +38,24 @@ public static class GetAllExternalSupplierUpdated
     }
 
     [Entity(Entities.AccountEntity.EntityLogicalName)]
-    public class Account : IEntity
+    public abstract class Account : IEntity
     {
-        [JsonProperty(Entities.AccountEntity.ExternalSupplierUpdated)]
+        [JsonPropertyName(Entities.AccountEntity.ExternalSupplierUpdated)]
         public DateTime ExternalSupplierUpdated { get; set; }
 
-        [JsonProperty(Entities.AccountEntity.FfKey)]
+        [JsonPropertyName(Entities.AccountEntity.FfKey)]
         public string? FfKey { get; set; }
 
-        [JsonProperty(Entities.AccountEntity.RemarksAboutHealth)]
+        [JsonPropertyName(Entities.AccountEntity.RemarksAboutHealth)]
         public string? RemarksAboutHealth { get; set; }
 
-        [JsonProperty(Entities.AccountEntity.ExternalSuppliers)]
+        [JsonPropertyName(Entities.AccountEntity.ExternalSuppliers)]
         public string? ExternalSuppliers { get; set; }
 
-        [JsonProperty(Entities.AccountEntity.CoveragePerEmployeeGroup)]
+        [JsonPropertyName(Entities.AccountEntity.CoveragePerEmployeeGroup)]
         public string? CoveragePerEmployeeGroup { get; set; }
 
-        [JsonProperty(Entities.AccountEntity.BlumeSupport)]
+        [JsonPropertyName(Entities.AccountEntity.BlumeSupport)]
         public bool? BlumeSupport { get; set; }
     }
 }

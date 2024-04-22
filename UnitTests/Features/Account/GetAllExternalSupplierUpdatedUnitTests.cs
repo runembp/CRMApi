@@ -14,7 +14,7 @@ public class GetAllExternalSupplierUpdatedUnitTests
         var request = new GetAllExternalSupplierUpdated.GetAllExternalSupplierUpdatedRequest();
         
         // Act
-        var result = GetAllExternalSupplierUpdated.Handle(new GetAllExternalSupplierUpdated.GetAllExternalSupplierUpdatedRequest(), apiClientService);
+        var result = await GetAllExternalSupplierUpdated.Handle(new GetAllExternalSupplierUpdated.GetAllExternalSupplierUpdatedRequest(), apiClientService);
 
         // Assert
 
