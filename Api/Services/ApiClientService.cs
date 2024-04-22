@@ -13,16 +13,17 @@ public class ApiClientService : IApiClientService
         var crmUsername = Environment.GetEnvironmentVariable("CRM_USERNAME");
         var crmPassword = Environment.GetEnvironmentVariable("CRM_PASSWORD");
         var domain = Environment.GetEnvironmentVariable("DOMAIN");
-        var crmOrganizationService = Environment.GetEnvironmentVariable("CRM_ORGANIZATIONSERVICE_URL");
+        var crmOrganizationServiceEndpoint = Environment.GetEnvironmentVariable("CRM_ORGANIZATIONSERVICE_URL");
 
-        //TODO Eventually we need a proper Environment Variable set up for the Web Api URL, instead of manupulating the organization service url...
-        var removeCrmOrganizationServiceEndpoint = crmOrganizationService!.Replace("XRMServices/2011/Organization.svc", "");
-        var crmWebApi = removeCrmOrganizationServiceEndpoint + "/api/data/v8.2/";
+        Guard.Against.NullOrEmpty(crmOrganizationServiceEndpoint, nameof(crmOrganizationServiceEndpoint));
+        
+        //TODO Eventually we need a proper Environment Variable set up for the Web Api URL, instead of manipulating the organization service url...
+        var crmUrl = crmOrganizationServiceEndpoint.Replace("XRMServices/2011/Organization.svc", string.Empty);
+        var crmWebApiEndpoint = $"{crmUrl}/api/data/v8.2/";
 
         Guard.Against.NullOrEmpty(crmUsername, nameof(crmUsername));
         Guard.Against.NullOrEmpty(crmPassword, nameof(crmPassword));
         Guard.Against.NullOrEmpty(domain, nameof(domain));
-        Guard.Against.NullOrEmpty(crmOrganizationService, nameof(crmOrganizationService));
 
         var handler = new HttpClientHandler
         {
@@ -31,7 +32,7 @@ public class ApiClientService : IApiClientService
 
         var client = new HttpClient(handler);
 
-        client.BaseAddress = new Uri(crmWebApi);
+        client.BaseAddress = new Uri(crmWebApiEndpoint);
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
