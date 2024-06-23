@@ -1,8 +1,4 @@
-﻿using FastEndpoints;
-using FluentValidation;
-using Microsoft.AspNetCore.Http.HttpResults;
-
-namespace CRMApi.Features;
+﻿namespace CRMApi.Features;
 
 public class TemplateEndpoint : Endpoint<Request, Response>
 {

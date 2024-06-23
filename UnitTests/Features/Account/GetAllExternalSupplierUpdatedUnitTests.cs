@@ -1,48 +1,43 @@
-using CRMApi.Features.Accounts;
-using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
-using NSubstitute;
+using CRMApi.Features.Account;
+using CRMApi.Interfaces;
+using FakeItEasy;
+using FastEndpoints;
+using FastEndpoints.Testing;
+using FluentAssertions;
 
 namespace UnitTests.Features.Account;
 
-public class GetAllExternalSupplierUpdatedUnitTests
+public class GetAllExternalSupplierUpdatedUnitTests(App app) : TestBase<App>
 {
     [Fact]
-    public async Task GetAllExternalSupplierUpdated_Returns_Ok_And_Populated_List_If_Entities_Are_Found()
+    public async Task GetAllExternalSupplierUpdated_Returns_Ok_If_Entities_Are_Found()
     {
-        // Arrange
-        var mediator = Substitute.For<IMediator>();
-        var expectedList = new List<GetAllExternalSupplierUpdated.Account> { new() };
-        mediator.Send(Arg.Any<GetAllExternalSupplierUpdated.GetAllExternalSupplierUpdatedQuery>(), Arg.Any<CancellationToken>()).Returns(expectedList);
-
+        var endpoint = Factory.Create<GetAllExternalSupplierUpdated>(app.ApiClientService);
+        
         // Act
-        var result = await GetAllExternalSupplierUpdated.Handle(mediator);
-
+        await endpoint.HandleAsync(default);
+        var response = endpoint.Response.ToList();
+        
         // Assert
-        Assert.NotNull(result);
-        Assert.IsType<Ok<IEnumerable<GetAllExternalSupplierUpdated.Account>>>(result);
-
-        var okResult = result as Ok<IEnumerable<GetAllExternalSupplierUpdated.Account>>;
-        Assert.NotNull(okResult?.Value);
-        Assert.Single(okResult.Value);
+        endpoint.HttpContext.Response.StatusCode.Should().Be(200);
+        endpoint.HttpContext.Response.ContentType.Should().Be("application/json");
+        response.Should().NotBeNull();
+        response.Should().NotBeEmpty();
     }
-
+    
     [Fact]
-    public async Task GetAllExternalSupplierUpdated_Returns_Ok_And_Empty_List_If_No_Entities_Are_Found()
+    public async Task GetAllExternalSupplierUpdated_Returns_Ok_If_No_Entities_Are_Found()
     {
         // Arrange
-        var mediator = Substitute.For<IMediator>();
-        mediator.Send(Arg.Any<GetAllExternalSupplierUpdated.GetAllExternalSupplierUpdatedQuery>(), Arg.Any<CancellationToken>()).Returns(new List<GetAllExternalSupplierUpdated.Account>());
-
+        var apiClientService = A.Fake<IApiClientService>();
+        var endpoint = Factory.Create<GetAllExternalSupplierUpdated>(apiClientService);
+        
         // Act
-        var result = await GetAllExternalSupplierUpdated.Handle(mediator);
-
+        await endpoint.HandleAsync(default);
+        var response = endpoint.Response;
+    
         // Assert
-        Assert.NotNull(result);
-        Assert.IsType<Ok<IEnumerable<GetAllExternalSupplierUpdated.Account>>>(result);
-
-        var okResult = result as Ok<IEnumerable<GetAllExternalSupplierUpdated.Account>>;
-        Assert.NotNull(okResult?.Value);
-        Assert.Empty(okResult.Value);
+        endpoint.HttpContext.Response.StatusCode.Should().Be(200);
+        response.Should().BeEmpty();
     }
 }

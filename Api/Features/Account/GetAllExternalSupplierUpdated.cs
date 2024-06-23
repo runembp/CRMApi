@@ -1,10 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using CRMApi.Entities;
-using CRMApi.Interfaces;
-using CRMApi.Utilities;
-using FastEndpoints;
-
-namespace CRMApi.Features.Account;
+﻿namespace CRMApi.Features.Account;
 
 public class GetAllExternalSupplierUpdated(IApiClientService apiClientService) : EndpointWithoutRequest<IEnumerable<GetAllExternalSupplierUpdated.Account>>
 {

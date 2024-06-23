@@ -1,7 +1,6 @@
 using System.Net;
 using System.Net.Http.Headers;
 using Ardalis.GuardClauses;
-using CRMApi.Interfaces;
 using Simple.OData.Client;
 
 namespace CRMApi.Services;

@@ -1,5 +1,4 @@
 using CRMApi;
-using FastEndpoints;
 using FastEndpoints.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);

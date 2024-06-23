@@ -1,4 +1,5 @@
 ﻿using CRMApi.Features.Account;
+using FluentAssertions;
 
 namespace UnitTests.Endpoints;
 
@@ -14,6 +15,6 @@ public class EndPointsVerifier
         const string actualGetAllExternalSupplierUpdatedEndpoint = AccountConstants.GetAllExternalSupplierUpdated;
 
         // Assert
-        Assert.Equal(expectedGetAllExternalSupplierUpdatedEndpoint, actualGetAllExternalSupplierUpdatedEndpoint);
+        expectedGetAllExternalSupplierUpdatedEndpoint.Should().BeEquivalentTo(actualGetAllExternalSupplierUpdatedEndpoint);
     }
 }

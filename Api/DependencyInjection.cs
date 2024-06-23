@@ -1,5 +1,4 @@
-﻿using CRMApi.Interfaces;
-using CRMApi.Services;
+﻿using CRMApi.Services;
 
 namespace CRMApi;
 
