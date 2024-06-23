@@ -5,7 +5,7 @@ public static class AccountEntity
     public const string EntityLogicalName = "account";
     public const string EntityPluralName = "accounts";
     public const string PrimaryKey = "accountid";
-    public const string PrimaryName = "name";
+    public const string UniqueIdentifier = "name";
     
     public const string ExternalSupplierUpdated = "new_externalsupplierupdated";
     public const string RemarksAboutHealth = "new_remarksabouthealth";

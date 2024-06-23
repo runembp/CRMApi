@@ -7,6 +7,6 @@ public static class DependencyInjection
 {
     public static void AddDependencyInjection(this IServiceCollection services)
     {
-        services.AddSingleton<IApiClientService, ApiClientService>();
+        services.AddScoped<IApiClientService, ApiClientService>();
     }
 }

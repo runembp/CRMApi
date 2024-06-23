@@ -1,7 +1,4 @@
-﻿using CRMApi;
-using CRMApi.Features.Accounts;
-using Microsoft.AspNetCore.Routing;
-using NSubstitute;
+﻿using CRMApi.Features.Account;
 
 namespace UnitTests.Endpoints;
 
@@ -11,25 +8,12 @@ public class EndPointsVerifier
     public void EndPoints_Are_Set_To_Correct_Values()
     {
         // Arrange
-        const string expectedGetAllExternalSupplierUpdatedEndpoint = "api/accounts/GetAllExternalSupplierUpdated";
+        const string expectedGetAllExternalSupplierUpdatedEndpoint = "accounts/GetAllExternalSupplierUpdated";
 
         // Act
-        const string actualGetAllExternalSupplierUpdatedEndpoint = GetAllExternalSupplierUpdated.Endpoint;
+        const string actualGetAllExternalSupplierUpdatedEndpoint = AccountConstants.GetAllExternalSupplierUpdated;
 
         // Assert
         Assert.Equal(expectedGetAllExternalSupplierUpdatedEndpoint, actualGetAllExternalSupplierUpdatedEndpoint);
-    }
-    
-    [Fact]
-    public void EndPoints_Are_Registered_Correctly()
-    {
-        // Arrange
-        var endpoints = Substitute.For<IEndpointRouteBuilder>();
-
-        // Act
-        EndPointsMapping.MapEndPoints(endpoints);
-
-        // Assert
-        endpoints.Received(1).RegisterGetAllExternalSupplierUpdatedEndpoint();
     }
 }

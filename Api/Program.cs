@@ -1,29 +1,22 @@
-using Carter;
 using CRMApi;
-using FluentValidation;
+using FastEndpoints;
+using FastEndpoints.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
-var assembly = typeof(Program).Assembly;
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
-builder.Services.AddCarter();
-builder.Services.AddMediatR(cf => cf.RegisterServicesFromAssembly(assembly));
-builder.Services.AddValidatorsFromAssembly(assembly);
 builder.Services.AddDependencyInjection();
+builder.Services.AddFastEndpoints();
+builder.Services.AddSwaggerDocumentation();
+builder.Services.AddVersioning();
+builder.Services.AddResponseCaching();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+app.UseResponseCaching();
+app.UseFastEndpoints(config =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.MapControllers();
-app.MapCarter();
-
-EndPointsMapping.MapEndPoints(app);
-
+    config.Endpoints.RoutePrefix = "api";
+    config.Versioning.Prefix = "v";
+});
+app.UseSwaggerGen();
 app.Run();
