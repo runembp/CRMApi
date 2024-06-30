@@ -1,4 +1,7 @@
-﻿namespace CRMApi.Features.Account;
+﻿using CRMApi.Context;
+using Microsoft.OData.Client;
+
+namespace CRMApi.Features.Account;
 
 public class GetAllExternalSupplierUpdated(IApiClientService apiClientService) : EndpointWithoutRequest<IEnumerable<GetAllExternalSupplierUpdated.Account>>
 {
@@ -15,37 +18,51 @@ public class GetAllExternalSupplierUpdated(IApiClientService apiClientService) :
 
     public override async Task HandleAsync(CancellationToken cancellationToken)
     {
-        var odataClient = apiClientService.GetODataClient();
-        var twoDaysAgo = DateTime.Now.AddDays(-2);
+        var context = apiClientService.GetCrmServiceContext();
+        
+        // var odataClient = apiClientService.GetODataClient();
+        // var twoDaysAgo = DateTime.Now.Date.AddDays(-2).ToString("yyyy-mm-ddThh:mm:ss('.'s+)?(zzzzzz)?");
+        //
+        // var accountsResult = odataClient
+        //     .For<Account>()
+        //     .Select(EntityUtility.Properties<Account>())
+        //     .Filter(x => x.ExternalSupplierUpdated >= DateTime.Now.Date);
+        //
+        // var accountsCommand = await accountsResult.GetCommandTextAsync();
+        //
+        // var thing = await accountsResult.FindEntriesAsync(cancellationToken);
+        
+        var test = context.Accounts
+            .Where(x => x.ExternalSupplierUpdated >= DateTime.Now.Date)
+            .ToList();
 
-        var accountsResult = await odataClient
-            .For<Account>()
-            .Select(Entity.Properties<Account>())
-            .Filter(x => x.ExternalSupplierUpdated >= twoDaysAgo)
-            .FindEntriesAsync(cancellationToken);
+        var query = new List<Account>(); 
 
-        await SendOkAsync(accountsResult, cancellationToken);
+        await SendOkAsync(query, cancellationToken);
     }
 
     [Entity(AccountEntity.EntityLogicalName)]
     public class Account
     {
-        [JsonPropertyName(AccountEntity.ExternalSupplierUpdated)]
+        [JsonPropertyName(AccountEntity.PrimaryKey)]
+        public Guid AccountId { get; init; }
+
+        [JsonPropertyName(AccountEntity.FieldExternalSupplierUpdated)]
         public DateTime ExternalSupplierUpdated { get; init; }
 
-        [JsonPropertyName(AccountEntity.FfKey)]
+        [JsonPropertyName(AccountEntity.FieldFfKey)]
         public string? FfKey { get; init; }
 
-        [JsonPropertyName(AccountEntity.RemarksAboutHealth)]
+        [JsonPropertyName(AccountEntity.FieldRemarksAboutHealth)]
         public string? RemarksAboutHealth { get; init; }
 
-        [JsonPropertyName(AccountEntity.ExternalSuppliers)]
+        [JsonPropertyName(AccountEntity.FieldExternalSuppliers)]
         public string? ExternalSuppliers { get; init; }
 
-        [JsonPropertyName(AccountEntity.CoveragePerEmployeeGroup)]
+        [JsonPropertyName(AccountEntity.FieldCoveragePerEmployeeGroup)]
         public string? CoveragePerEmployeeGroup { get; init; }
 
-        [JsonPropertyName(AccountEntity.BlumeSupport)]
+        [JsonPropertyName(AccountEntity.FieldBlumeSupport)]
         public bool? BlumeSupport { get; init; }
     }
 }

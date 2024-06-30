@@ -2,15 +2,9 @@
 
 namespace CRMApi.Utilities
 {
-    public static class Entity
+    public static class EntityUtility
     {
-        public static IEnumerable<string> Properties<T>() where T : class
-        {
-            var properties = typeof(T).GetProperties();
-            return properties.Select(property => property.Name);
-        }
-
-        public static string[] JsonProperties<T>()
+        public static string[] Properties<T>()
         {
             return typeof(T).GetProperties()
                 .Select(p => p.GetCustomAttribute<JsonPropertyNameAttribute>()?.Name)

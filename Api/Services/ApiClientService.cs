@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Headers;
+using CRMApi.Context;
 using Simple.OData.Client;
 
 namespace CRMApi.Services;
@@ -39,5 +40,25 @@ public class ApiClientService : IApiClientService
         };
 
         return new ODataClient(oDataClientSettings);
+    }
+    
+    public CrmServiceContext GetCrmServiceContext()
+    {
+        var crmUsername = Environment.GetEnvironmentVariable("CRM_USERNAME");
+        var crmPassword = Environment.GetEnvironmentVariable("CRM_PASSWORD");
+        var domain = Environment.GetEnvironmentVariable("DOMAIN");
+        var crmOrganizationServiceEndpoint = Environment.GetEnvironmentVariable("CRM_ORGANIZATIONSERVICE_URL");
+
+        ArgumentNullException.ThrowIfNull(crmUsername, nameof(crmUsername));
+        ArgumentNullException.ThrowIfNull(crmPassword, nameof(crmPassword));
+        ArgumentNullException.ThrowIfNull(domain, nameof(domain));
+        ArgumentNullException.ThrowIfNull(crmOrganizationServiceEndpoint, nameof(crmOrganizationServiceEndpoint));
+
+        var crmUrl = crmOrganizationServiceEndpoint.Replace("XRMServices/2011/Organization.svc", string.Empty);
+        var crmWebApiEndpoint = $"{crmUrl}/api/data/v8.2/";
+        
+        var networkCredentials = new NetworkCredential(crmUsername, crmPassword, domain);
+
+        return new CrmServiceContext(new Uri(crmWebApiEndpoint), networkCredentials);
     }
 }
