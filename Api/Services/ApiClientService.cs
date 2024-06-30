@@ -1,6 +1,5 @@
 using System.Net;
 using System.Net.Http.Headers;
-using Ardalis.GuardClauses;
 using Simple.OData.Client;
 
 namespace CRMApi.Services;
@@ -14,15 +13,14 @@ public class ApiClientService : IApiClientService
         var domain = Environment.GetEnvironmentVariable("DOMAIN");
         var crmOrganizationServiceEndpoint = Environment.GetEnvironmentVariable("CRM_ORGANIZATIONSERVICE_URL");
 
-        Guard.Against.NullOrEmpty(crmOrganizationServiceEndpoint, nameof(crmOrganizationServiceEndpoint));
-        
+        ArgumentNullException.ThrowIfNull(crmUsername, nameof(crmUsername));
+        ArgumentNullException.ThrowIfNull(crmPassword, nameof(crmPassword));
+        ArgumentNullException.ThrowIfNull(domain, nameof(domain));
+        ArgumentNullException.ThrowIfNull(crmOrganizationServiceEndpoint, nameof(crmOrganizationServiceEndpoint));
+
         //TODO Eventually we need a proper Environment Variable set up for the Web Api URL, instead of manipulating the organization service url...
         var crmUrl = crmOrganizationServiceEndpoint.Replace("XRMServices/2011/Organization.svc", string.Empty);
         var crmWebApiEndpoint = $"{crmUrl}/api/data/v8.2/";
-
-        Guard.Against.NullOrEmpty(crmUsername, nameof(crmUsername));
-        Guard.Against.NullOrEmpty(crmPassword, nameof(crmPassword));
-        Guard.Against.NullOrEmpty(domain, nameof(domain));
 
         var handler = new HttpClientHandler
         {
@@ -40,8 +38,6 @@ public class ApiClientService : IApiClientService
             IgnoreUnmappedProperties = true
         };
 
-        var oDataClient = new ODataClient(oDataClientSettings);
-
-        return oDataClient;
+        return new ODataClient(oDataClientSettings);
     }
 }

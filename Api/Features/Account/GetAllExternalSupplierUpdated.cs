@@ -6,6 +6,7 @@ public class GetAllExternalSupplierUpdated(IApiClientService apiClientService) :
     {
         Get(AccountConstants.GetAllExternalSupplierUpdated);
         Tags(AccountConstants.Tag);
+        AllowAnonymous();
 
         Description(endpoint => endpoint.Produces<IEnumerable<Account>>());
         Summary(summary => summary.Summary = "Retrieves Accounts where the field ExternalSupplierUpdated has been updated within the last two days");

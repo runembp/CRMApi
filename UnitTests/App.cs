@@ -1,27 +1,20 @@
 ﻿using CRMApi.Interfaces;
 using CRMApi.Meta;
-using FakeItEasy;
+using CRMApi.Services;
 using FastEndpoints.Testing;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Simple.OData.Client;
 
 namespace UnitTests;
 
 public class App : AppFixture<IApplicationMarker>
 {
-    public IApiClientService ApiClientService { get; private set; } = default!;
-    public IODataClient ODataClient { get; private set; } = default!;
+    public IApiClientService ApiClientService = default!;
     
     protected override Task SetupAsync()
     {
-        var apiClientService = A.Fake<IApiClientService>();
-        var odataClient = A.Fake<IODataClient>();
+        ApiClientService = new ApiClientService();
         
-        A.CallTo(() => apiClientService.GetODataClient()).Returns(odataClient);
-
-        ApiClientService = apiClientService;
-        ODataClient = odataClient;
         return Task.CompletedTask;
     }
     
