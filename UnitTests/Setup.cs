@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace UnitTests;
 
-public class App : AppFixture<IApplicationMarker>
+public class Setup : AppFixture<IApplicationMarker>
 {
     public IApiClientService ApiClientService = default!;
     
@@ -20,12 +20,12 @@ public class App : AppFixture<IApplicationMarker>
     
     protected override void ConfigureApp(IWebHostBuilder a)
     {
-        // do host builder config here
+        
     }
 
     protected override void ConfigureServices(IServiceCollection s)
     {
-        // do test service registration here
+        
     }
 
     protected override Task TearDownAsync()

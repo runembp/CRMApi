@@ -4,3 +4,5 @@
 /packages
 /UnitTests/obj
 /UnitTests/bin
+/IntegrationTests/obj
+/IntegrationTests/bin
